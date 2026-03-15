@@ -1,9 +1,8 @@
-import React from 'react';
 import ResultCard from './ResultCard';
 import WelcomeScreen from './WelcomeScreen';
 
 
-const Dashboard = ({ items, onDelete, onFilter, loading = false, onUpload }) => {
+const Dashboard = ({ items, onDelete, loading = false, onUpload }) => {
   // Show welcome screen when there are no items and not loading
   if (items.length === 0 && !loading) {
     return <WelcomeScreen onUpload={onUpload} loading={loading} />;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Sparkles, Upload, BarChart3, CheckCircle, Calendar, BookOpen, Code } from 'lucide-react';
 import Dashboard from './components/Dashboard';
@@ -11,12 +11,10 @@ function App() {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const [fetchingItems, setFetchingItems] = useState(true);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [isDragging, setIsDragging] = useState(false);
   const [bulkActionLoading, setBulkActionLoading] = useState(false);
-  const [appLoaded, setAppLoaded] = useState(false);
 
   // App initialization effect
   useEffect(() => {
@@ -358,7 +356,7 @@ function App() {
                   { label: 'Tasks', value: items.filter(item => item.type === 'TASK').length, color: 'border-[#f97316]' },
                   { label: 'Notes', value: items.filter(item => item.type === 'NOTE').length, color: 'border-[#f97316]' },
                   { label: 'Code', value: items.filter(item => item.type === 'CODE').length, color: 'border-[#f97316]' },
-                ].map((stat, index) => (
+                ].map((stat) => (
                   <div key={stat.label} className={`bg-[#1a1410] rounded-lg p-4 border-t-4 ${stat.color} border-[#faf5f0]/10`}>
                     <div className="text-2xl font-bold text-[#faf5f0] mb-1">{stat.value}</div>
                     <div className="text-xs text-[#faf5f0]/60">{stat.label}</div>

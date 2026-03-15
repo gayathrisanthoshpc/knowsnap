@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Upload, Sparkles, Zap, Brain, ArrowRight, Play, Star, CheckCircle, Image as ImageIcon, FileText, Code, Calendar } from 'lucide-react';
+import { useState } from 'react';
+import { Upload, Sparkles, Zap, Brain, Play, Star, CheckCircle, Image as ImageIcon } from 'lucide-react';
 
 const features = [
   {
@@ -29,15 +29,6 @@ const stats = [
 ];
 
 const WelcomeScreen = ({ loading }) => {
-  const [currentFeature, setCurrentFeature] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentFeature((prev) => (prev + 1) % features.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, []);
 
   return (
     <div className="relative min-h-[70vh] flex flex-col justify-center">

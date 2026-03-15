@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Trash2, Eye, EyeOff, CheckCircle, Calendar, BookOpen, Code, Sparkles, Clock } from 'lucide-react';
+import { useState } from 'react';
+import { Trash2, Eye, EyeOff, CheckCircle, Calendar, BookOpen, Code, Clock } from 'lucide-react';
 
 const typeIcons = {
   TASK: CheckCircle,
@@ -41,7 +41,6 @@ const typeColors = {
 
 const ResultCard = ({ item, onDelete }) => {
   const [showRawText, setShowRawText] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const TypeIcon = typeIcons[item.type];
   const colors = typeColors[item.type];
 

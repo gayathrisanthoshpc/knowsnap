@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Upload, Image as ImageIcon, Loader2, X, Sparkles } from 'lucide-react';
 
 const UploadZone = ({ onUpload, loading }) => {

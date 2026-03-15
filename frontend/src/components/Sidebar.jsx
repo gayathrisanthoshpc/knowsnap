@@ -1,4 +1,3 @@
-import React from 'react';
 import { BarChart3, CheckCircle, Calendar, BookOpen, Code, X } from 'lucide-react';
 
 const Sidebar = ({ isOpen, onClose, activeFilter, onFilter, stats }) => {
