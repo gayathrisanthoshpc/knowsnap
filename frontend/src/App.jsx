@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Menu, X, Sparkles, Zap, Brain } from 'lucide-react';
+import { Sparkles, Upload, BarChart3, CheckCircle, Calendar, BookOpen, Code } from 'lucide-react';
 import UploadZone from './components/UploadZone';
 import Dashboard from './components/Dashboard';
-import Sidebar from './components/Sidebar';
 
 const API_BASE_URL = 'http://localhost:8000';
 
@@ -97,9 +96,19 @@ function App() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative overflow-hidden transition-opacity duration-1000 ${
-      appLoaded ? 'opacity-100' : 'opacity-0'
-    }`}>
+    <div className="min-h-screen bg-[#121313] text-white font-body relative overflow-hidden">
+      {/* Atmospheric background orbs */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-20 left-20 w-96 h-96 bg-[#FF6044]/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-20 w-80 h-80 bg-[#FF6044]/5 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-[#FF6044]/8 rounded-full blur-3xl animate-pulse delay-2000"></div>
+      </div>
+
+      {/* Noise texture overlay */}
+      <div className="fixed inset-0 opacity-[0.015] pointer-events-none" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`
+      }}></div>
+
       {/* Hidden file input for WelcomeScreen */}
       <input
         type="file"
@@ -108,113 +117,190 @@ function App() {
         className="hidden"
         id="file-input"
       />
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-2000"></div>
-        <div className="absolute top-40 left-40 w-80 h-80 bg-pink-500 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-pulse animation-delay-4000"></div>
 
-        {/* Additional floating elements */}
-        <div className="absolute top-1/4 left-1/4 w-4 h-4 bg-yellow-400 rounded-full animate-bounce opacity-60"></div>
-        <div className="absolute top-3/4 right-1/4 w-6 h-6 bg-cyan-400 rounded-full animate-bounce opacity-40 animation-delay-1000"></div>
-        <div className="absolute bottom-1/4 left-1/2 w-3 h-3 bg-emerald-400 rounded-full animate-bounce opacity-50 animation-delay-2000"></div>
-      </div>
-
-      {/* Sidebar */}
-      <Sidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        activeFilter={activeFilter}
-        onFilter={handleFilter}
-        stats={{
-          total: items.length,
-          tasks: items.filter(item => item.type === 'TASK').length,
-          reminders: items.filter(item => item.type === 'REMINDER').length,
-          notes: items.filter(item => item.type === 'NOTE').length,
-          code: items.filter(item => item.type === 'CODE').length,
-        }}
-      />
-
-      {/* Main content */}
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-80' : 'ml-0'}`}>
-        {/* Header */}
-        <header className="backdrop-blur-xl bg-white/10 border-b border-white/20 sticky top-0 z-40">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16">
-              <div className="flex items-center space-x-4">
-                <button
-                  onClick={() => setSidebarOpen(!sidebarOpen)}
-                  className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 text-white hover:scale-110"
-                >
-                  {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                </button>
-                <div className="flex items-center space-x-3">
-                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center shadow-lg animate-pulse">
-                    <Sparkles className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <h1 className="text-xl font-bold text-white flex items-center">
-                      KnowSnap
-                      <Zap className="h-4 w-4 ml-2 text-yellow-400 animate-pulse" />
-                    </h1>
-                    <p className="text-xs text-white/70 flex items-center">
-                      <Brain className="h-3 w-3 mr-1" />
-                      AI-Powered Screenshot Intelligence
-                    </p>
-                  </div>
+      {/* Main layout grid */}
+      <div className="grid grid-cols-[280px_1fr] min-h-screen">
+        {/* Sidebar */}
+        <aside className="bg-[#0F0F0F] border-r border-white/10 flex flex-col">
+          {/* Logo */}
+          <div className="p-6 border-b border-white/10">
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-[#FF6044] rounded-lg flex items-center justify-center shadow-lg shadow-[#FF6044]/20">
+                <Sparkles className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg font-display font-bold text-white">KnowSnap</h1>
+                <div className="flex items-center space-x-1">
+                  <div className="w-2 h-2 bg-[#FF6044] rounded-full animate-pulse"></div>
+                  <span className="text-xs text-white/60">v1.0 · AI-Powered</span>
                 </div>
               </div>
             </div>
           </div>
-        </header>
 
-        {/* Main content area */}
-        <main className="relative z-10">
-          <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+          {/* Upload Zone */}
+          <div className="p-6 border-b border-white/10">
+            <div className="space-y-3">
+              <h3 className="text-sm font-semibold text-white/80">Upload Screenshot</h3>
+              <button
+                onClick={() => document.getElementById('file-input')?.click()}
+                disabled={loading}
+                className="w-full p-4 border-2 border-dashed border-white/20 rounded-lg hover:border-[#FF6044]/50 hover:bg-[#FF6044]/5 transition-all duration-200 group"
+              >
+                <div className="flex flex-col items-center space-y-2">
+                  {loading ? (
+                    <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#FF6044] border-t-transparent"></div>
+                  ) : (
+                    <Upload className="w-6 h-6 text-white/60 group-hover:text-[#FF6044] transition-colors" />
+                  )}
+                  <span className="text-sm text-white/60 group-hover:text-white transition-colors">
+                    {loading ? 'Processing...' : 'Drop or click to upload'}
+                  </span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Navigation */}
+          <nav className="flex-1 p-6">
+            <div className="space-y-1">
+              {[
+                { key: 'All', label: 'All Items', icon: BarChart3, count: items.length },
+                { key: 'TASK', label: 'Tasks', icon: CheckCircle, count: items.filter(item => item.type === 'TASK').length },
+                { key: 'REMINDER', label: 'Reminders', icon: Calendar, count: items.filter(item => item.type === 'REMINDER').length },
+                { key: 'NOTE', label: 'Notes', icon: BookOpen, count: items.filter(item => item.type === 'NOTE').length },
+                { key: 'CODE', label: 'Code', icon: Code, count: items.filter(item => item.type === 'CODE').length },
+              ].map((item) => (
+                <button
+                  key={item.key}
+                  onClick={() => handleFilter(item.key)}
+                  className={`w-full flex items-center justify-between p-3 rounded-lg transition-all duration-200 ${
+                    activeFilter === item.key
+                      ? 'bg-[#FF6044]/10 border border-[#FF6044]/20 text-[#FF6044]'
+                      : 'text-white/70 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  <div className="flex items-center space-x-3">
+                    <item.icon className="w-4 h-4" />
+                    <span className="text-sm font-medium">{item.label}</span>
+                  </div>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    activeFilter === item.key
+                      ? 'bg-[#FF6044]/20 text-[#FF6044]'
+                      : 'bg-white/10 text-white/60'
+                  }`}>
+                    {item.count}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </nav>
+
+          {/* Footer */}
+          <div className="p-6 border-t border-white/10">
+            <div className="text-xs text-white/40 space-y-1">
+              <div>Frontend: localhost:5176</div>
+              <div>Backend: localhost:8000</div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="relative">
+          {/* Header */}
+          <header className="border-b border-white/10 bg-[#0F0F0F]/50 backdrop-blur-sm">
+            <div className="px-8 py-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h1 className="text-2xl font-display font-bold text-white">
+                    Your <span className="text-[#FF6044]">Knowledge Base</span>
+                  </h1>
+                  <p className="text-sm text-white/60 mt-1">
+                    Transform screenshots into actionable insights
+                  </p>
+                </div>
+                {items.length > 0 && (
+                  <div className="text-right">
+                    <div className="text-2xl font-display font-bold text-white">{items.length}</div>
+                    <div className="text-xs text-white/60">Total items</div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </header>
+
+          {/* Content */}
+          <div className="p-8">
+            {/* Stats Overview */}
+            {items.length > 0 && (
+              <div className="grid grid-cols-4 gap-4 mb-8">
+                {[
+                  { label: 'Total', value: items.length, color: 'border-white/20' },
+                  { label: 'Tasks', value: items.filter(item => item.type === 'TASK').length, color: 'border-blue-400/30' },
+                  { label: 'Notes', value: items.filter(item => item.type === 'NOTE').length, color: 'border-purple-400/30' },
+                  { label: 'Code', value: items.filter(item => item.type === 'CODE').length, color: 'border-emerald-400/30' },
+                ].map((stat, index) => (
+                  <div key={stat.label} className="bg-[#0F0F0F] rounded-lg p-4 border border-white/10">
+                    <div className="text-2xl font-display font-bold text-white mb-1">{stat.value}</div>
+                    <div className="text-xs text-white/60">{stat.label}</div>
+                    <div className={`w-full h-0.5 ${stat.color} mt-3 rounded-full`}></div>
+                  </div>
+                ))}
+              </div>
+            )}
+
             {/* Notifications */}
-            <div className="mb-8 space-y-4">
+            <div className="mb-6 space-y-3">
               {error && (
-                <div className="backdrop-blur-xl bg-red-500/20 border border-red-400/30 text-red-100 rounded-xl p-4 flex items-center animate-fade-in shadow-2xl shadow-red-500/20">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <div className="bg-red-500/10 border border-red-400/20 rounded-lg p-4 flex items-center animate-fade-in">
+                  <div className="text-red-400 mr-3">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-medium">{error}</p>
-                  </div>
+                  <div className="text-sm text-red-200">{error}</div>
                 </div>
               )}
 
               {success && (
-                <div className="backdrop-blur-xl bg-green-500/20 border border-green-400/30 text-green-100 rounded-xl p-4 flex items-center animate-fade-in shadow-2xl shadow-green-500/20">
-                  <div className="flex-shrink-0">
-                    <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                <div className="bg-green-500/10 border border-green-400/20 rounded-lg p-4 flex items-center animate-fade-in">
+                  <div className="text-green-400 mr-3">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                     </svg>
                   </div>
-                  <div className="ml-3">
-                    <p className="text-sm font-medium">{success}</p>
-                  </div>
+                  <div className="text-sm text-green-200">{success}</div>
                 </div>
               )}
             </div>
 
-            {/* Upload Zone */}
-            <div className="mb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-              <UploadZone onUpload={handleUpload} loading={loading} />
-            </div>
-
             {/* Dashboard */}
-            <div className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-              <Dashboard
-                items={items}
-                onDelete={handleDelete}
-                onFilter={handleFilter}
-                loading={fetchingItems}
-                onUpload={handleUpload}
-              />
-            </div>
+            <Dashboard
+              items={items}
+              onDelete={handleDelete}
+              onFilter={handleFilter}
+              loading={fetchingItems}
+              onUpload={handleUpload}
+            />
+
+            {/* Pro tip */}
+            {items.length > 0 && (
+              <div className="mt-8 bg-[#0F0F0F] rounded-lg p-4 border border-white/10">
+                <div className="flex items-start space-x-3">
+                  <div className="w-5 h-5 text-[#FF6044] mt-0.5">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 000 16zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-white mb-1">💡 Pro tip</div>
+                    <div className="text-xs text-white/60">
+                      Use high-contrast screenshots for better OCR accuracy. Avoid blurry or low-resolution images.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </main>
       </div>

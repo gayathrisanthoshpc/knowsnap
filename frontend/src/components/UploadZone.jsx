@@ -60,10 +60,10 @@ const UploadZone = ({ onUpload, loading }) => {
     <div className="mb-8">
       <div className="max-w-lg mx-auto">
         <div
-          className={`relative backdrop-blur-xl bg-white/10 border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 cursor-pointer group ${
+          className={`relative bg-[#0F0F0F] border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 cursor-pointer group ${
             isDragOver
-              ? 'border-purple-400/60 bg-purple-500/10 shadow-2xl shadow-purple-500/20 scale-105'
-              : 'border-white/30 hover:border-white/50 hover:bg-white/15'
+              ? 'border-[#FF6044]/60 bg-[#FF6044]/10 shadow-2xl shadow-[#FF6044]/20 scale-105'
+              : 'border-white/20 hover:border-[#FF6044]/50 hover:bg-[#FF6044]/5'
           }`}
           onDrop={handleDrop}
           onDragOver={handleDragOver}
@@ -96,7 +96,7 @@ const UploadZone = ({ onUpload, loading }) => {
               </div>
 
               <div className="space-y-3">
-                <div className="backdrop-blur-xl bg-white/10 rounded-lg p-4 border border-white/20">
+                <div className="bg-black/20 rounded-lg p-4 border border-white/10">
                   <p className="text-sm font-semibold text-white truncate">{selectedFile.name}</p>
                   <p className="text-xs text-white/70 mt-1">
                     {(selectedFile.size / 1024 / 1024).toFixed(2)} MB • {selectedFile.type.split('/')[1].toUpperCase()}
@@ -105,7 +105,7 @@ const UploadZone = ({ onUpload, loading }) => {
 
                 <button
                   onClick={handleClick}
-                  className="text-sm text-purple-300 hover:text-purple-200 underline transition-colors duration-200"
+                  className="text-sm text-[#FF6044] hover:text-[#FF6044]/80 underline transition-colors duration-200"
                 >
                   Choose different file
                 </button>
@@ -114,11 +114,11 @@ const UploadZone = ({ onUpload, loading }) => {
           ) : (
             <div className="relative space-y-6">
               <div className="relative">
-                <div className={`p-6 rounded-2xl backdrop-blur-xl bg-white/10 border border-white/20 transition-all duration-300 group-hover:scale-110 group-hover:bg-white/20 ${
-                  isDragOver ? 'scale-110 bg-purple-500/20 border-purple-400/60' : ''
+                <div className={`p-6 rounded-2xl bg-[#FF6044]/10 border border-white/10 transition-all duration-300 group-hover:scale-110 group-hover:bg-[#FF6044]/20 ${
+                  isDragOver ? 'scale-110 bg-[#FF6044]/20 border-[#FF6044]/60' : ''
                 }`}>
                   <Upload className={`mx-auto h-16 w-16 transition-all duration-300 ${
-                    isDragOver ? 'text-purple-300 scale-110' : 'text-white/70 group-hover:text-white'
+                    isDragOver ? 'text-[#FF6044] scale-110' : 'text-white/70 group-hover:text-[#FF6044]'
                   }`} />
                 </div>
 
@@ -156,7 +156,7 @@ const UploadZone = ({ onUpload, loading }) => {
           <button
             onClick={handleAnalyze}
             disabled={loading}
-            className="mt-8 w-full backdrop-blur-xl bg-gradient-to-r from-purple-600/80 to-pink-600/80 hover:from-purple-500/90 hover:to-pink-500/90 text-white py-4 px-8 rounded-2xl font-semibold shadow-2xl shadow-purple-500/30 transition-all duration-300 transform hover:scale-105 hover:shadow-purple-400/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center border border-white/20"
+            className="mt-8 w-full bg-[#FF6044] hover:bg-[#FF6044]/90 text-white py-4 px-8 rounded-2xl font-semibold shadow-2xl shadow-[#FF6044]/30 transition-all duration-300 transform hover:scale-105 hover:shadow-[#FF6044]/40 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center border border-white/10"
           >
             {loading ? (
               <>

@@ -1,6 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=DM+Mono:wght@300;400;500&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Font families */
+.font-display {
+  font-family: 'Syne', sans-serif;
+}
+
+.font-body {
+  font-family: 'DM Mono', monospace;
+}
 
 /* Custom animations and styles */
 @keyframes fadeIn {
