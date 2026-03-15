@@ -16,14 +16,6 @@ function App() {
   const [isDragging, setIsDragging] = useState(false);
   const [bulkActionLoading, setBulkActionLoading] = useState(false);
 
-  // App initialization effect
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAppLoaded(true);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
   const fetchItems = async (type = null) => {
     try {
       setFetchingItems(true);
@@ -38,6 +30,7 @@ function App() {
     }
   };
 
+  // App initialization effect
   useEffect(() => {
     fetchItems();
   }, []);
