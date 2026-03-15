@@ -42,6 +42,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
     <style>
+      /* Base page background (prevents white flash while React loads) */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: #1a1410;
+        color: #faf5f0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
       /* Loading Screen Styles */
       .loading-screen {
         position: fixed;
@@ -49,15 +59,15 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 75%, #1a1a2e 100%);
-        background-size: 400% 400%;
-        animation: gradientShift 8s ease infinite;
+        background: radial-gradient(circle at top right, rgba(255, 154, 61, 0.35), transparent 55%),
+          radial-gradient(circle at bottom left, rgba(255, 128, 0, 0.18), transparent 60%),
+          #1a1410;
+        overflow: hidden;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         z-index: 9999;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
 
       @keyframes gradientShift {
@@ -74,13 +84,13 @@
         width: 80px;
         height: 80px;
         margin: 0 auto 2rem;
-        background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+        background: radial-gradient(circle at top left, rgba(255, 186, 60, 1), rgba(255, 120, 0, 0.8));
         border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 2.5rem;
-        box-shadow: 0 20px 40px rgba(139, 92, 246, 0.3);
+        box-shadow: 0 20px 40px rgba(255, 139, 75, 0.35);
         animation: logoFloat 3s ease-in-out infinite;
       }
 
@@ -93,7 +103,7 @@
         font-size: 1.5rem;
         font-weight: 600;
         margin-bottom: 1rem;
-        background: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
+        background: linear-gradient(135deg, rgba(255, 186, 60, 1) 0%, rgba(255, 120, 0, 0.9) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -109,7 +119,7 @@
         width: 40px;
         height: 40px;
         border: 3px solid rgba(255, 255, 255, 0.1);
-        border-top: 3px solid #8B5CF6;
+        border-top: 3px solid rgba(255, 160, 60, 1);
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin: 0 auto;
@@ -131,7 +141,7 @@
 
       .loading-progress-bar {
         height: 100%;
-        background: linear-gradient(90deg, #8B5CF6 0%, #EC4899 100%);
+        background: linear-gradient(90deg, rgba(255, 160, 60, 1) 0%, rgba(255, 120, 0, 0.85) 100%);
         border-radius: 2px;
         animation: progress 2s ease-in-out infinite;
       }
@@ -147,7 +157,7 @@
         position: absolute;
         width: 4px;
         height: 4px;
-        background: rgba(139, 92, 246, 0.6);
+        background: rgba(255, 160, 60, 0.75);
         border-radius: 50%;
         animation: float 6s ease-in-out infinite;
       }

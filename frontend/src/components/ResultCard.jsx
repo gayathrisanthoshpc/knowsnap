@@ -52,7 +52,7 @@ const ResultCard = ({ item, onDelete }) => {
   };
 
   return (
-    <div className={`bg-[#0F0F0F] rounded-lg border ${colors.border} hover:border-[#FF6044]/30 transition-all duration-300 overflow-hidden group hover:shadow-lg hover:shadow-[#FF6044]/10`}>
+    <div className={`bg-[#1a1410] rounded-lg border ${colors.border} hover:border-[#f97316]/30 transition-all duration-300 overflow-hidden group hover:shadow-lg hover:shadow-[#f97316]/10`}>
       <div className="p-6">
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center space-x-3">
