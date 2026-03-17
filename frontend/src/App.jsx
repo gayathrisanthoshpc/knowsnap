@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Sparkles, Upload, BarChart3, CheckCircle, Calendar, BookOpen, Code } from 'lucide-react';
 import Dashboard from './components/Dashboard';
+import Timeline from './components/Timeline';
 
 const API_BASE_URL = 'http://localhost:8000';
 
@@ -266,6 +267,10 @@ function App() {
               ))}
             </div>
           </nav>
+
+          <div className="p-6 border-t border-[#faf5f0]/10">
+            <Timeline />
+          </div>
 
           <div className="p-6 border-t border-[#faf5f0]/10">
             <div className="text-xs text-[#faf5f0]/40 space-y-1">

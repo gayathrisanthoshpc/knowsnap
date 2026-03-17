@@ -1,4 +1,5 @@
 import re
+from datetime import datetime, timedelta
 
 def classify_text(text):
     """
@@ -67,6 +68,12 @@ def classify_text(text):
     if scores[max_type] == 0:
         max_type = 'NOTE'
     
+    # Detect due dates
+    due_date = detect_due_date(text)
+    
+    # Highlight important keywords
+    highlighted_text = highlight_keywords(text)
+    
     # Generate title and summary based on type
     if max_type == 'TASK':
         title = extract_task_title(text)
@@ -89,7 +96,9 @@ def classify_text(text):
         "type": max_type,
         "title": title,
         "summary": summary,
-        "actions": actions
+        "actions": actions,
+        "due_date": due_date,
+        "highlighted_text": highlighted_text
     }
 
 def extract_task_title(text):
@@ -170,3 +179,105 @@ def extract_code_title(text):
     # Fallback
     first_line = lines[0].strip()
     return first_line[:50] if len(first_line) > 0 else "Code Snippet"
+
+def detect_due_date(text):
+    """
+    Detect due dates from text using pattern matching.
+    Returns ISO format date string or None.
+    """
+    text_lower = text.lower()
+    now = datetime.now()
+    
+    # Pattern for explicit dates (MM/DD/YYYY, DD/MM/YYYY, etc.)
+    date_patterns = [
+        r'(\d{1,2})[/-](\d{1,2})[/-](\d{4})',  # MM/DD/YYYY or DD/MM/YYYY
+        r'(\d{4})[/-](\d{1,2})[/-](\d{1,2})',  # YYYY/MM/DD
+    ]
+    
+    for pattern in date_patterns:
+        match = re.search(pattern, text)
+        if match:
+            try:
+                if len(match.group(1)) == 4:  # YYYY/MM/DD
+                    year, month, day = int(match.group(1)), int(match.group(2)), int(match.group(3))
+                else:  # Assume MM/DD/YYYY
+                    month, day, year = int(match.group(1)), int(match.group(2)), int(match.group(3))
+                
+                due_date = datetime(year, month, day)
+                if due_date > now:
+                    return due_date.isoformat()
+            except ValueError:
+                continue
+    
+    # Pattern for relative dates
+    relative_patterns = [
+        (r'\btomorrow\b', timedelta(days=1)),
+        (r'\bnext week\b', timedelta(weeks=1)),
+        (r'\bin (\d+) days?\b', lambda m: timedelta(days=int(m.group(1)))),
+        (r'\bin (\d+) weeks?\b', lambda m: timedelta(weeks=int(m.group(1)))),
+    ]
+    
+    for pattern, delta_func in relative_patterns:
+        match = re.search(pattern, text_lower)
+        if match:
+            if callable(delta_func):
+                delta = delta_func(match)
+            else:
+                delta = delta_func
+            due_date = now + delta
+            return due_date.isoformat()
+    
+    # Pattern for specific times (today at X PM)
+    time_patterns = [
+        r'\btoday at (\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b',
+        r'\btomorrow at (\d{1,2})(?::(\d{2}))?\s*(am|pm)?\b',
+    ]
+    
+    for pattern in time_patterns:
+        match = re.search(pattern, text_lower)
+        if match:
+            hour = int(match.group(1))
+            minute = int(match.group(2)) if match.group(2) else 0
+            am_pm = match.group(3).lower() if match.group(3) else None
+            
+            if am_pm == 'pm' and hour != 12:
+                hour += 12
+            elif am_pm == 'am' and hour == 12:
+                hour = 0
+            
+            if 'tomorrow' in pattern and 'tomorrow' in text_lower:
+                due_date = now + timedelta(days=1)
+            else:
+                due_date = now
+            
+            due_date = due_date.replace(hour=hour, minute=minute, second=0, microsecond=0)
+            if due_date > now:
+                return due_date.isoformat()
+    
+    return None
+
+def highlight_keywords(text):
+    """
+    Highlight important keywords in the text.
+    Returns the text with keywords wrapped in highlight markers.
+    """
+    # Keywords to highlight
+    highlight_keywords = [
+        'urgent', 'important', 'asap', 'deadline', 'due', 'today', 'tomorrow',
+        'meeting', 'call', 'submit', 'complete', 'finish', 'review', 'check',
+        'email', 'phone', 'contact', 'schedule', 'remind', 'remember'
+    ]
+    
+    highlighted_text = text
+    
+    for keyword in highlight_keywords:
+        # Case-insensitive replacement with word boundaries
+        pattern = r'\b(' + re.escape(keyword) + r')\b'
+        highlighted_text = re.sub(
+            pattern, 
+            r'**HIGHLIGHT**\1**ENDHIGHLIGHT**', 
+            highlighted_text, 
+            flags=re.IGNORECASE
+        )
+    
+    return highlighted_text
